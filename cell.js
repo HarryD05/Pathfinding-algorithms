@@ -4,17 +4,27 @@ class Cell {
     this.row = row;
     this.x = col * gridSize;
     this.y = row * gridSize;
+    this.hovered = false;
+    this.road = false;
   }
 
   render() {
     stroke(0);
     strokeWeight(1);
-    fill(255, 255, 255);
+
+    if (this.road) {
+      fill(150, 150, 150);
+    } else if (this.hovered) {
+      fill(200, 200, 200);
+    } else {
+      fill(255, 255, 255);
+    }
+
     rectMode(CORNER)
     rect(this.x, this.y, gridSize, gridSize);
 
-    noFill();
+    /*noFill();
     text(`${this.row}, ${this.col}`, this.x + (gridSize / 2), this.y + (gridSize / 2));
-    textAlign(CENTER, CENTER);
+    textAlign(CENTER, CENTER);*/
   }
 }
