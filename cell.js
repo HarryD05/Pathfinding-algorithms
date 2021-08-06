@@ -13,18 +13,14 @@ class Cell {
     strokeWeight(1);
 
     if (this.road) {
-      fill(150, 150, 150);
+      fill(120, 120, 120);
     } else if (this.hovered) {
-      fill(200, 200, 200);
+      fill(39, 119, 53);
     } else {
-      fill(255, 255, 255);
+      fill(49, 152, 68);
     }
 
     rectMode(CORNER)
     rect(this.x, this.y, gridSize, gridSize);
-
-    /*noFill();
-    text(`${this.row}, ${this.col}`, this.x + (gridSize / 2), this.y + (gridSize / 2));
-    textAlign(CENTER, CENTER);*/
   }
 }

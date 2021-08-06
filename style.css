@@ -3,6 +3,10 @@
   padding: 0;
 }
 
+html {
+  background-color: azure;
+}
+
 body {
   font-family:Verdana, Geneva, Tahoma, sans-serif;
   text-align: center;
