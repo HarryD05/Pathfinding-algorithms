@@ -3,6 +3,7 @@
 //TODO: A*
 //TODO: MAKE NODE CHECKS ITERATIVE
 //TODO: ADD DIAGONALS
+//TODO: DIRECTIONAL EDGES
 
 //Defining global variables
 const states = ["Draw roads", "Remove roads", "See roads as graph", "Pathfind (Dijkstra's algorithm)", "Pathfind (A* algorithm)"];
