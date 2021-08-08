@@ -1,10 +1,3 @@
-//TODO: ADD COMMENTS
-//TODO: DIJKSTRA'S ALGORITHM
-//TODO: A*
-//TODO: MAKE NODE CHECKS ITERATIVE
-//TODO: ADD DIAGONALS
-//TODO: DIRECTIONAL EDGES
-
 //Defining global variables
 const states = ["Draw roads", "Remove roads", "See roads as graph", "Pathfind (Dijkstra's algorithm)", "Pathfind (A* algorithm)"];
 
@@ -26,6 +19,8 @@ let previousHover = { row: 0, col: 0 };
 let start = -1;
 let end = -1;
 
+let startAlert = false;
+let endAlert = false;
 let alertShown = false;
 
 //Called once when page loaded
@@ -189,6 +184,17 @@ function draw() {
         });
 
         const isStart = start < 0;
+        if (isStart) {
+          if (startAlert) {
+            alert("Select the starting node");
+            startAlert = false;
+          }
+        } else {
+          if (endAlert) {
+            alert("Select the end node");
+            endAlert = false;
+          }
+        }
         nodes.forEach(node => {
           node.checkHover(mouseX, mouseY, isStart);
           node.render();
@@ -232,6 +238,8 @@ function keyPressed() {
     selected = -1;
     start = -1;
     end = -1;
+    startAlert = true;
+    endAlert = true;
     alertShown = false;
     edges.forEach(edge => {
       edge.selected = false;
