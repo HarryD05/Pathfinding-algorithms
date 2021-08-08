@@ -184,7 +184,7 @@ function draw() {
         //Getting the heuristic for each node - TODO: refactor into a function
         if (!astartData.heuristicsDone) {
           nodes.forEach(node => {
-            node.heuristic = getHeuristic(node, nodes[start]);
+            node.heuristic = getHeuristic(node, nodes[end]);
           });
           astartData.heuristicsDone = true;
         }

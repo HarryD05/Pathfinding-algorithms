@@ -3,11 +3,11 @@
 //############################################
 
 //Function that generates the heuristic for a node
-const getHeuristic = (curr, start) => {
+const getHeuristic = (curr, end) => {
   //Using a the straight linedistance between the 2 nodes as the heuristic
   const value = sqrt(
-    pow(start.pos.col - curr.pos.col, 2) +
-    pow(start.pos.row - curr.pos.row, 2)
+    pow(end.pos.col - curr.pos.col, 2) +
+    pow(end.pos.row - curr.pos.row, 2)
   );
 
   //Returning the value as an integer greater than 0
