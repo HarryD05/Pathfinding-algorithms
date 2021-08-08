@@ -8,6 +8,16 @@ const isNode = (row, col) => {
   return false;
 }
 
+const isEdge = (a, b) => {
+  for (const edge of edges) {
+    if ((edge.a === a || edge.a === b) && (edge.b === a || edge.b === b)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 const nodeIndex = (row, col) => {
   for (let i = 0; i < nodes.length; i++) {
     if (nodes[i].pos.col === col && nodes[i].pos.row === row) {
@@ -101,53 +111,14 @@ class Node {
       thisCentre.y
     );
 
-    //DRAWING EDGES BETWEEN NODES
-    this.neighbours.forEach(edge => {
-      const node = nodes[edge.end];
-
-      const nodeCentre = {
-        x: (node.pos.col * gridSize) + (gridSize / 2),
-        y: (node.pos.row * gridSize) + (gridSize / 2)
-      };
-
-      strokeWeight(1);
-      stroke(0);
-      line(
-        thisCentre.x,
-        thisCentre.y,
-        nodeCentre.x,
-        nodeCentre.y
-      )
-
-      //LABELLING EDGE WITH COST
-      noStroke();
-      fill(255);
-      rectMode(RADIUS);
-      rect(
-        (thisCentre.x + nodeCentre.x) / 2,
-        (thisCentre.y + nodeCentre.y) / 2,
-        8
-      )
-
-      strokeWeight(1);
-      stroke(0);
-      noFill();
-      textAlign(CENTER, CENTER);
-      text(
-        edge.cost,
-        (thisCentre.x + nodeCentre.x) / 2,
-        (thisCentre.y + nodeCentre.y) / 2
-      )
-
-      //LABELLING NODE
-      strokeWeight(1);
-      stroke(0);
-      textAlign(LEFT, BOTTOM);
-      text(
-        char(65 + this.index),
-        thisCentre.x + 10,
-        thisCentre.y - 10
-      )
-    });
+    //LABELLING NODE
+    strokeWeight(1);
+    stroke(0);
+    textAlign(LEFT, BOTTOM);
+    text(
+      char(65 + this.index),
+      thisCentre.x + 10,
+      thisCentre.y - 10
+    )
   }
 }

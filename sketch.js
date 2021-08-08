@@ -10,6 +10,8 @@ const rows = height / gridSize;
 const grid = [];
 let roads = [];
 let nodes = [];
+let edges = [];
+let selected = -1;
 
 let state = 0;
 let mapped = false;
@@ -32,19 +34,13 @@ function setup() {
     }
   }
 
-  //Creating state selector
-  stateSelect = createSelect();
-  states.forEach((option, index) => {
-    stateSelect.option(option, index);
-  });
-  stateSelect.changed(e => {
-    if (states[state] === "See roads as graph") {
-      mapped = false; //Reseting values
-      nodes = [];
-    }
-
-    state = Number(e.target.value)
-  });
+  //Creating state key
+  const info = createP(`Press the key to change the state: <br />${[...states].map((s, index) => `${index + 1} - ${s}`).join("<br />")}`);
+  const current = createP(`Current state: ${states[state]}`);
+  info.parent("instructions");
+  info.id("info")
+  current.parent("instructions");
+  current.id("current")
 }
 
 //Called every frame
@@ -75,6 +71,11 @@ function draw() {
             if (!grid[hoverCell.row][hoverCell.col].road) { //If the current cell isn't a road...
               roads.push({ row: hoverCell.row, col: hoverCell.col }); //Add cell to road array
               grid[hoverCell.row][hoverCell.col].road = true; //Make cell a road
+
+              mapped = false;
+              nodes = [];
+              edges = [];
+              selected = -1;
             }
           } else { //If removing roads
             if (grid[hoverCell.row][hoverCell.col].road) { //If the current cell is a road
@@ -82,6 +83,11 @@ function draw() {
                 return !(road.col === hoverCell.col && road.row === hoverCell.row);
               }); //Remove the current cell from the road array
               grid[hoverCell.row][hoverCell.col].road = false; //Strip the cell of the road property
+
+              mapped = false;
+              nodes = [];
+              edges = [];
+              selected = -1;
             }
           }
         }
@@ -111,11 +117,44 @@ function draw() {
       nodes.forEach(node => {
         node.render();
       })
+
+      edges.forEach(edges => {
+        edges.checkHover();
+        edges.render();
+      })
       break;
 
     case 3:
       //Path finding
       break;
+  }
+}
+
+function keyPressed() {
+  if (selected) {
+    if (selected >= 0 && selected < edges.length) {
+      if (keyCode === UP_ARROW) {
+        edges[selected].cost++;
+      } else if (keyCode === DOWN_ARROW) {
+        edges[selected].cost--;
+      }
+
+      nodes[edges[selected].a].neighbours.forEach(neighbour => {
+        if (neighbour.end === edges[selected].b) {
+          neighbour.cost = edges[selected].cost;
+        }
+      });
+      nodes[edges[selected].b].neighbours.forEach(neighbour => {
+        if (neighbour.end === edges[selected].a) {
+          neighbour.cost = edges[selected].cost;
+        }
+      })
+    }
+  }
+
+  if (key === "1" || key === "2" || key === "3" || key === "4") {
+    state = Number(key) - 1;
+    document.getElementById("current").innerText = `Current state: ${states[state]}`;
   }
 }
 
@@ -134,6 +173,17 @@ const mapGrid = () => {
   }
 
   nodes.forEach(node => node.mapNeighbours());
+
+  //Map edges
+  let index = 0;
+  nodes.forEach(node => {
+    node.neighbours.forEach(edge => {
+      if (!isEdge(node.index, edge.end)) {
+        edges.push(new Edge(node.index, edge.end, edge.cost, index));
+        index++;
+      }
+    })
+  })
 
   mapped = true;
 }
