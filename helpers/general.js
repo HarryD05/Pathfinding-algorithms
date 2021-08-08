@@ -57,7 +57,6 @@ const showTable = (table, hasHeuristic = false) => {
     text("Permanent", left + col_width_small + col_width_large, top);
   }
 
-
   //Drawing a row for each node
   for (let row = 0; row < table.getRowCount(); row++) {
     for (let col = 0; col < table.getColumnCount(); col++) {
@@ -82,6 +81,16 @@ const showTable = (table, hasHeuristic = false) => {
         }
       }
 
+      //Making the letter of the start/end node coloured (green/red)
+      if (row === start && col === 0) {
+        stroke(25, 100, 10); //if start row and first column make text green
+      } else if (row === end && col === 0) {
+        stroke(180, 25, 25); //if end row and first column make text red
+      } else {
+        stroke(0); //For everything else make text black
+      }
+
+      //Display text to canvas (of the current row and column)
       text(
         table.getString(row, col),
         x,
