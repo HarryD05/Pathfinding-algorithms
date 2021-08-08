@@ -8,7 +8,7 @@ html {
 }
 
 body {
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   text-align: center;
 }
 
@@ -23,5 +23,12 @@ p {
 }
 
 #info {
-  margin: 1rem;
+  margin: auto;
+  width: 300px;
+  text-align: left;
+}
+
+.btn {
+  width: 18px;
+  height: 18px;
 }

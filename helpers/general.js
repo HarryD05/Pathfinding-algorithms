@@ -2,6 +2,35 @@
 //# Helper functions #
 //####################
 
+//Function that changes the state
+const selectState = val => {
+  //Updating the state and display the new state
+  state = val;
+  document.getElementById("current").innerText = `Current state: ${states[state]}`;
+
+  //Resetting state properties e.g. deselecting nodes and edges
+  selected = -1;
+  start = -1;
+  end = -1;
+  startAlert = true;
+  endAlert = true;
+  alertShown = false;
+
+  //Resettting the hover and selected state of all the edges (so an edge isn't still
+  //selected when you return to state 2
+  edges.forEach(edge => {
+    edge.selected = false;
+    edge.hover = false;
+  });
+
+  //Resetting the start and end booleans so that when you return to the path finding states
+  //the start and end nodes haven't already been selected
+  nodes.forEach(node => {
+    node.end = false;
+    node.start = false;
+  })
+}
+
 //Function that displays the work in progress alert if the alert hasn't been shown yet
 const WIPAlert = () => {
   //TEMPORARY - alerting the user that the algorithm hasn't been setup yet
@@ -32,9 +61,9 @@ const nodeSelectAlert = isStart => {
 //Function to display the table for the nodes for the pathfinding states
 const showTable = (table, hasHeuristic = false) => {
   //Properties for drawing text 
-  noFill();
-  stroke(0);
-  strokeWeight(1);
+  fill(0);
+  stroke(0)
+  strokeWeight(0.65); //The first row will be bold (the headers)
 
   //Variables defining the tables properties
   const left = 320;
@@ -81,13 +110,23 @@ const showTable = (table, hasHeuristic = false) => {
         }
       }
 
+      strokeWeight(0);
+
       //Making the letter of the start/end node coloured (green/red)
       if (row === start && col === 0) {
-        stroke(25, 100, 10); //if start row and first column make text green
+        fill(25, 100, 10); //if start row and first column make text green
+        stroke(25, 100, 10);
       } else if (row === end && col === 0) {
-        stroke(180, 25, 25); //if end row and first column make text red
+        fill(180, 25, 25); //if end row and first column make text red
+        stroke(180, 25, 25);
       } else {
-        stroke(0); //For everything else make text black
+        fill(0); //For everything else make text black
+        stroke(0);
+      }
+
+      //Making first column bold (the node letters)
+      if (col === 0) {
+        strokeWeight(0.65);
       }
 
       //Display text to canvas (of the current row and column)

@@ -10,6 +10,6 @@ const getHeuristic = (curr, end) => {
     pow(end.pos.row - curr.pos.row, 2)
   );
 
-  //Returning the value as an integer greater than 0
-  return constrain(floor(value), 1, 10000);
+  //Returning the value as a floored integer
+  return floor(value);
 }

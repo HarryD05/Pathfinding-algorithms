@@ -55,10 +55,15 @@ function setup() {
   }
 
   //Creating changing state instructions in DOM
-  const info = createP(`Press the key to change the state: <br />${[...states].map((s, index) => `${index + 1} - ${s}`).join("<br />")}`);
-  const current = createP(`Current state: ${states[state]}`);
+  let infoText = "Press the key to change the state: <br />";
+  infoText += [...states].map((s, index) => {
+    return `<button class="btn" onClick="selectState(${index})">${index + 1}</button> ${s}`;
+  }).join("<br />");
+  const info = createP(infoText);
   info.parent("instructions");
   info.id("info")
+
+  const current = createP(`<b>Current state:</b> ${states[state]}`);
   current.parent("instructions");
   current.id("current")
 }
@@ -239,29 +244,6 @@ function keyPressed() {
   //If a key corresponding to a state is pressed...
   if (key === "1" || key === "2" || key === "3" || key === "4" || key === "5") {
     //Update the state to the corresponding key and display the new state
-    state = Number(key) - 1;
-    document.getElementById("current").innerText = `Current state: ${states[state]}`;
-
-    //Resetting state properties e.g. deselecting nodes and edges
-    selected = -1;
-    start = -1;
-    end = -1;
-    startAlert = true;
-    endAlert = true;
-    alertShown = false;
-
-    //Resettting the hover and selected state of all the edges (so an edge isn't still
-    //selected when you return to state 2
-    edges.forEach(edge => {
-      edge.selected = false;
-      edge.hover = false;
-    });
-
-    //Resetting the start and end booleans so that when you return to the path finding states
-    //the start and end nodes haven't already been selected
-    nodes.forEach(node => {
-      node.end = false;
-      node.start = false;
-    })
+    selectState(Number(key) - 1);
   }
 }
