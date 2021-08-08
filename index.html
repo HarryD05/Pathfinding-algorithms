@@ -7,8 +7,8 @@
     href="https://f1.pngfuel.com/png/564/497/80/color-background-graph-coloring-vertex-graph-theory-angle-symmetry-search-algorithm-media-png-clip-art-thumbnail.png"
     type="image/x-icon">
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Visualisation of Dijkstra's algorithm using a grid" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Visualisation of Dijkstra's algorithm and A* algorithm using a grid" />
   <script src="libraries/p5.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
@@ -19,10 +19,12 @@
     <p>(Diagonals not yet included)</p>
   </div>
   <div id="canvas">
-    <script src="cell.js"></script>
-    <script src="node.js"></script>
-    <script src="edge.js"></script>
-    <script src="nodeChecks.js"></script>
+    <script src="helpers/general.js"></script>
+    <script src="helpers/nodeChecks.js"></script>
+    <script src="helpers/nodeClass.js"></script>
+    <script src="classes/cell.js"></script>
+    <script src="classes/node.js"></script>
+    <script src="classes/edge.js"></script>
     <script src="sketch.js"></script>
   </div>
 </body>
