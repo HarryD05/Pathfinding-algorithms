@@ -25,6 +25,10 @@ let mapped = false;
 let previousHover = { row: 0, col: 0 };
 let start = -1;
 let end = -1;
+let astartData = {
+  heuristicsDone: false
+};
+let dijkstraData = {};
 
 //Alert booleans (used so an alert is only shown once)
 let startAlert = false;
@@ -176,6 +180,14 @@ function draw() {
         displayGraph(); //Drawing the graph in the top left corner
         displayTable(true); //Drawing the table of nodes on the right side of the canvas with the heuristic colum
         WIPAlert(); //Alert that states the functionality isn't ready yet
+
+        //Getting the heuristic for each node - TODO: refactor into a function
+        if (!astartData.heuristicsDone) {
+          nodes.forEach(node => {
+            node.heuristic = getHeuristic(node, nodes[start]);
+          });
+          astartData.heuristicsDone = true;
+        }
       } else {
         const isStart = start < 0; //Checking if the start node has been selected
         displayGraph(true, isStart); //Drawing the graph on the canvas and checking if a node has been selected
