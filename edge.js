@@ -35,8 +35,6 @@ class Edge {
   }
 
   render() {
-    this.checkHover(mouseX, mouseY);
-
     strokeWeight(4);
     stroke(0);
     if (this.selected) {
@@ -48,7 +46,7 @@ class Edge {
     noStroke();
     fill(255);
     if (this.hover || this.selected) {
-      fill(200);
+      fill(225);
     }
     ellipseMode(CENTER);
     ellipse(this.centre.x, this.centre.y, 24, 24);

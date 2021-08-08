@@ -1,5 +1,11 @@
+//TODO: ADD COMMENTS
+//TODO: DIJKSTRA'S ALGORITHM
+//TODO: A*
+//TODO: MAKE NODE CHECKS ITERATIVE
+//TODO: ADD DIAGONALS
+
 //Defining global variables
-const states = ["Draw roads", "Remove roads", "See roads as graph", "Pathfind"];
+const states = ["Draw roads", "Remove roads", "See roads as graph", "Pathfind (Dijkstra's algorithm)", "Pathfind (A* algorithm)"];
 
 const width = 600;
 const height = 600;
@@ -15,7 +21,11 @@ let selected = -1;
 
 let state = 0;
 let mapped = false;
-let previousHover = { row: 0, col: 0 }
+let previousHover = { row: 0, col: 0 };
+let start = -1;
+let end = -1;
+
+let alertShown = false;
 
 //Called once when page loaded
 function setup() {
@@ -114,29 +124,91 @@ function draw() {
         mapGrid();
       }
 
+      edges.forEach(edge => {
+        edge.checkHover(mouseX, mouseY);
+        edge.render();
+      });
+
       nodes.forEach(node => {
         node.render();
-      })
-
-      edges.forEach(edges => {
-        edges.checkHover();
-        edges.render();
-      })
+      });
       break;
 
     case 3:
+    case 4:
       //Path finding
+      background(255, 255, 255);
+
+      if (start >= 0 && end >= 0) {
+        push();
+        scale(0.5);
+        stroke(0);
+        strokeWeight(1);
+        fill(255);
+        rect(0, 0, width, height);
+
+        if (!mapped) {
+          mapGrid();
+        }
+
+        edges.forEach(edge => {
+          edge.render();
+        });
+
+        nodes.forEach(node => {
+          node.render();
+        });
+        pop();
+
+        const table = new p5.Table();
+        table.addColumn("node");
+        table.addColumn("temporary");
+        table.addColumn("permanent");
+
+        nodes.forEach(node => {
+          newRow = table.addRow();
+          newRow.setString("node", char(65 + node.index));
+          newRow.setString("temporary", `${node.temporary.cost} (from ${node.temporary.from})`);
+          newRow.setString("permanent", `${node.permanent.cost} (from ${node.permanent.from})`);
+        });
+
+        showTable(table);
+
+        if (!alertShown) {
+          alertShown = true;
+          alert("Not ready yet...");
+        }
+      } else {
+        if (!mapped) {
+          mapGrid();
+        }
+
+        edges.forEach(edge => {
+          edge.render();
+        });
+
+        const isStart = start < 0;
+        nodes.forEach(node => {
+          node.checkHover(mouseX, mouseY, isStart);
+          node.render();
+        });
+      }
+
       break;
   }
 }
 
 function keyPressed() {
-  if (selected) {
+  if (selected !== null && selected !== undefined && state === 2) {
     if (selected >= 0 && selected < edges.length) {
       if (keyCode === UP_ARROW) {
         edges[selected].cost++;
       } else if (keyCode === DOWN_ARROW) {
         edges[selected].cost--;
+
+        if (edges[selected].cost <= 0) {
+          edges[selected].cost = 1;
+        }
       }
 
       nodes[edges[selected].a].neighbours.forEach(neighbour => {
@@ -152,9 +224,47 @@ function keyPressed() {
     }
   }
 
-  if (key === "1" || key === "2" || key === "3" || key === "4") {
+  if (key === "1" || key === "2" || key === "3" || key === "4" || key === "5") {
     state = Number(key) - 1;
     document.getElementById("current").innerText = `Current state: ${states[state]}`;
+
+    selected = -1;
+    start = -1;
+    end = -1;
+    alertShown = false;
+    edges.forEach(edge => {
+      edge.selected = false;
+      edge.hover = false;
+    });
+    nodes.forEach(node => {
+      node.end = false;
+      node.start = false;
+    })
+  }
+}
+
+const showTable = table => {
+  noFill();
+  stroke(0);
+  strokeWeight(1);
+
+  const left = 320;
+  const col_width = 100;
+  const row_height = 20;
+  const top = 20;
+
+  textAlign(LEFT, TOP);
+  text("Node", left, top);
+  text("Temporary", left + col_width, top);
+  text("Permanent", left + (col_width * 2), top);
+  for (let row = 0; row < table.getRowCount(); row++) {
+    for (let col = 0; col < table.getColumnCount(); col++) {
+      text(
+        table.getString(row, col),
+        left + (col) * col_width,
+        top + (row + 1) * row_height
+      );
+    }
   }
 }
 

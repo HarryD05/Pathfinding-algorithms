@@ -13,11 +13,15 @@ class Cell {
     strokeWeight(1);
 
     if (this.road) {
-      fill(120, 120, 120);
+      fill(120);
     } else if (this.hovered) {
-      fill(39, 119, 53);
+      fill(180);
     } else {
-      fill(49, 152, 68);
+      if (state === 0) {
+        fill(150, 250, 150);
+      } else if (state === 1) {
+        fill(255, 160, 150);
+      }
     }
 
     rectMode(CORNER)
