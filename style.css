@@ -10,25 +10,63 @@ html {
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   text-align: center;
+  font-size:smaller;
+  padding: 1rem;
+  width: calc(100% - 2rem);
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+@media (max-width: 1000px) {
+  body {
+    grid-template-columns: 1fr;
+  }
 }
 
 h1 {
-  margin: 1rem;
+  margin: 4px;
   user-select: none;
 }
 
 p {
-  padding: 8px;
+  padding: 4px;
   user-select: none;
 }
 
-#info {
+#info, #edge-buttons {
   margin: auto;
   width: 300px;
   text-align: left;
 }
 
+#edge-buttons p {
+  text-align: center;
+  width: 300px;
+  margin: auto;
+  margin-top: 1rem;
+}
+
+.show {
+  display: initial;
+}
+
+.hide {
+  display: none;
+}
+
 .btn {
   width: 18px;
   height: 18px;
+}
+
+#up {
+  margin-right: 8px;
+  width: 32px;
+  height: 32px;
+}
+
+#down {
+  margin-left: 8px;
+  width: 32px;
+  height: 32px;
 }

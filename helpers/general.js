@@ -6,7 +6,7 @@
 const selectState = val => {
   //Updating the state and display the new state
   state = val;
-  document.getElementById("current").innerText = `Current state: ${states[state]}`;
+  document.getElementById("current").innerHTML = `<b>Current state:</b> ${states[state]}`;
 
   //Resetting state properties e.g. deselecting nodes and edges
   selected = -1;
@@ -28,7 +28,14 @@ const selectState = val => {
   nodes.forEach(node => {
     node.end = false;
     node.start = false;
-  })
+  });
+
+  //Displaying up and down buttons if change edge cost state (2)
+  if (state === 2) {
+    document.getElementById("edge-buttons").classList = ["show"];
+  } else {
+    document.getElementById("edge-buttons").classList = ["hide"];
+  }
 }
 
 //Function that displays the work in progress alert if the alert hasn't been shown yet
@@ -243,6 +250,12 @@ const mapGrid = () => {
 
   //Setting mapped to true so the mapping function is only called once each time state changes to 2, 3 or 4
   mapped = true;
+
+  //If no nodes then don't try to display the graph
+  if (nodes.length === 0) {
+    selectState(0);
+    mapped = false;
+  }
 }
 
 //Function used to check whether or not a cell is a node (intersection between roads)
@@ -271,4 +284,18 @@ const checkCell = (row, col) => {
 
   //If non true then not a node
   return false;
+}
+
+//Updating the cost of the edges for the 2 end nodes
+const updateEdges = () => {
+  nodes[edges[selected].a].neighbours.forEach(neighbour => {
+    if (neighbour.end === edges[selected].b) {
+      neighbour.cost = edges[selected].cost;
+    }
+  });
+  nodes[edges[selected].b].neighbours.forEach(neighbour => {
+    if (neighbour.end === edges[selected].a) {
+      neighbour.cost = edges[selected].cost;
+    }
+  });
 }

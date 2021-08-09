@@ -40,7 +40,7 @@ let alertShown = false;
 //##############################
 function setup() {
   //Creating the canvas and putting it in the canvas div (centre of page styling)
-  const canvas = createCanvas(600, 600);
+  const canvas = createCanvas(width, height);
   canvas.parent(document.getElementById("canvas"));
 
   //Giving canvas grey background
@@ -54,18 +54,46 @@ function setup() {
     }
   }
 
-  //Creating changing state instructions in DOM
-  let infoText = "Press the key to change the state: <br />";
+  //Creating changing state instructions and up and down buttons in DOM 
+  let infoText = "Press the key or button to change the state: <br />";
   infoText += [...states].map((s, index) => {
     return `<button class="btn" onClick="selectState(${index})">${index + 1}</button> ${s}`;
   }).join("<br />");
   const info = createP(infoText);
   info.parent("instructions");
-  info.id("info")
+  info.id("info");
 
   const current = createP(`<b>Current state:</b> ${states[state]}`);
   current.parent("instructions");
-  current.id("current")
+  current.id("current");
+
+  const upButton = createButton("+1");
+  upButton.parent("edge-buttons");
+  upButton.id("up");
+  upButton.class("btn");
+  upButton.mouseClicked(() => {
+    //If the button is pressed increase the cost of the selected edge by 1
+    edges[selected].cost++;
+
+    updateEdges();
+  });
+  const downButton = createButton("-1");
+  downButton.parent("edge-buttons");
+  downButton.id("down");
+  downButton.class("btn");
+  downButton.mouseClicked(() => {
+    //If the button is pressed decreased the cost of the selected edge by 1
+    edges[selected].cost--;
+
+    //Ensuring the cost of the edge is no lower than 1 
+    if (edges[selected].cost <= 0) {
+      edges[selected].cost = 1;
+    }
+
+    updateEdges();
+  });
+
+  selectState(0);
 }
 
 //###########################################
@@ -227,17 +255,7 @@ function keyPressed() {
         }
       }
 
-      //Updating the cost of the edges for the 2 end nodes
-      nodes[edges[selected].a].neighbours.forEach(neighbour => {
-        if (neighbour.end === edges[selected].b) {
-          neighbour.cost = edges[selected].cost;
-        }
-      });
-      nodes[edges[selected].b].neighbours.forEach(neighbour => {
-        if (neighbour.end === edges[selected].a) {
-          neighbour.cost = edges[selected].cost;
-        }
-      })
+      updateEdges(); //Updating the end costs of the end nodes of the selected edge
     }
   }
 
