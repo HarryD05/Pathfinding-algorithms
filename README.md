@@ -4,14 +4,14 @@ Experimenting with visualising pathfinding algorithms using [p5.js](https://p5js
 - [A* algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm#Description)
 
 ## To do list
-- Add more comments for current code **Done**
+- Add more comments for current code **(Done)**
+- Make site mobile friendly **(Done)**
 - Implement Dijkstra's algorithm
 - Implement A* algorithm
 - Replace alerts with a modal or on canvas text
 - Refactor check node code to use iteration
 - Add diagonal checks for node check functions
 - Add directional edges
-- Make site mobile friendly
 
 ## Functionality
 - Create a road network (using the draw/remove roads modes)
