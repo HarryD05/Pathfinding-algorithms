@@ -28,7 +28,16 @@ let end = -1;
 let astartData = {
   heuristicsDone: false
 };
-let dijkstraData = {};
+let dijkstraData = {
+  current: -1,
+  index: 0,
+  nextReady: false,
+  userReady: false,
+  pos: 0,
+  alertShown: false,
+  lowestIndex: -1,
+  lowestCost: 100000000
+};
 
 //Alert booleans (used so an alert is only shown once)
 let startAlert = false;
@@ -92,6 +101,11 @@ function setup() {
 
     updateEdges();
   });
+
+  //Setting the onclick for next step button
+  document.getElementById("next").onclick = () => {
+    dijkstraData.userReady = true;
+  }
 
   selectState(0);
 }
@@ -188,14 +202,14 @@ function draw() {
 
     case 3:
       //Dijkstra's pathfinding algorithm visualisation
-      background(255, 255, 255);
+      background(240, 255, 255);
 
       //If the start and end indices are set (not -1) then the algorithm can begin
       //If not then let the user select the start and end nodes
       if (start >= 0 && end >= 0) {
         displayGraph(); //Drawing the graph in the top left corner
         displayTable(); //Drawing the table of nodes on the right side of the canvas
-        WIPAlert(); //Alert that states the functionality isn't ready yet
+        dijkstra(); //Run next step of Dijkstra's algorithm
       } else {
         const isStart = start < 0; //Checking if the start node has been selected
         displayGraph(true, isStart); //Drawing the graph on the canvas and checking if a node has been selected

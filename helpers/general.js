@@ -28,13 +28,30 @@ const selectState = val => {
   nodes.forEach(node => {
     node.end = false;
     node.start = false;
+    node.peek = false;
+    node.current = false;
+    node.visited = false;
   });
+
+  dijkstraData = {
+    current: -1,
+    nextReady: false,
+    userReady: false,
+    pos: 0,
+    alertShown: false
+  };
 
   //Displaying up and down buttons if change edge cost state (2)
   if (state === 2) {
     document.getElementById("edge-buttons").classList = ["show"];
   } else {
     document.getElementById("edge-buttons").classList = ["hide"];
+  }
+
+  if (state === 3 || state === 4) {
+    document.getElementById("pathfinding-info").classList = ["show"];
+  } else {
+    document.getElementById("pathfinding-info").classList = ["hide"];
   }
 }
 
@@ -53,13 +70,13 @@ const nodeSelectAlert = isStart => {
   //If the start node hasn't been selected then alert the user to select the start node
   if (isStart) {
     if (startAlert) {
-      alert("Select the starting node");
+      document.getElementById("explanation").innerHTML = "Select the starting node";
       startAlert = false;
     }
   } else {
     //If the start node has been selected but end node not then alert the user to select the end node
     if (endAlert) {
-      alert("Select the end node");
+      document.getElementById("explanation").innerHTML = "Select the end node";
       endAlert = false;
     }
   }
@@ -167,8 +184,13 @@ const displayTable = hasHeuristic => {
     if (hasHeuristic) {
       newRow.setString("heuristic", node.heuristic);
     }
-    newRow.setString("temporary", `${node.temporary.cost} (from ${node.temporary.from})`);
-    newRow.setString("permanent", `${node.permanent.cost} (from ${node.permanent.from})`);
+    let from = (node.temporary.from === "N/A" ? "" : `(from ${char(65 + node.temporary.from)})`);
+    let cost = (node.temporary.cost === "infinity" ? "∞" : node.temporary.cost);
+    newRow.setString("temporary", `${cost} ${from}`);
+
+    from = (node.permanent.from === "N/A" ? "" : `(from ${char(65 + node.permanent.from)})`);
+    cost = (node.permanent.cost === "infinity" ? "∞" : node.permanent.cost);
+    newRow.setString("permanent", `${cost} ${from}`);
   });
 
   showTable(table, hasHeuristic); //Displaying the table on the canvas

@@ -18,13 +18,16 @@ class Node {
     );
 
     this.neighbours = []; //Stores the other nodes connected to the node (will store its row, col position and the cost of the edge)
-    this.temporary = { cost: -1, from: 'N/A' }; //The temporary label of the node which will be used in the pathfinding algorithms
-    this.permanent = { cost: -1, from: 'N/A' }; //The permanent label of the node which will be used in the pathfinding algorithms
+    this.temporary = { cost: "infinity", from: 'N/A' }; //The temporary label of the node which will be used in the pathfinding algorithms
+    this.permanent = { cost: "infinity", from: 'N/A' }; //The permanent label of the node which will be used in the pathfinding algorithms
     this.heuristic = -1; //The heuristic cost of the node which will be used in the A* pathfinding algorithm
 
     this.hover = false; //Whether or not the node is being hovered over 
     this.start = false; //Whether or not the node is the start of the path
     this.end = false; //Whether or not the node is the end of the path
+    this.current = false; //Whether or not the node is the current node (checking its neighbours)
+    this.peek = false; //Whether or not the node is being checked currently
+    this.visited = false; //Whether or not the node is visited (has a permanent label)
   }
 
   //Method to check if the node is being hovered over or clicked
@@ -59,7 +62,6 @@ class Node {
     //Iterating through all the directions (NESW currently) and checking if there is a node in any of the directions
     for (const dir of directions) {
       let i = 1;
-      console.log({ row, col });
       //Iterating through moving one place in the current direction until a node is hit (add it as a neighbour) or the 
       //end of the grid is reached
       while (true) {
@@ -71,11 +73,8 @@ class Node {
         const currRow = row + dy;
         const currCol = col + dx;
 
-        console.log({ currRow, currCol });
-
         //Checking if the cell being checked is a node
         if (isNode(currRow, currCol)) {
-          console.log("here");
           //If it is add it to the neighbour array of the current node storing the neighbouring node's index in the global
           //node array and the cost of the edge (Euclidean distance between the 2 nodes)
           this.neighbours.push({
@@ -110,12 +109,29 @@ class Node {
 
     //Setting the fill of the circle 
     fill(255); //white as a default
-    if (this.start) {
-      fill(150, 250, 150); //if the node is the starting node make it green
-    } else if (this.end) {
-      fill(255, 160, 150); //if the node is the end node make it red
-    } else if (this.hover) {
+
+    if (this.hover) {
       fill(225); //if then node is currently being hovered over make it grey
+    }
+
+    if (state === 3 || state === 4) {
+      if (start < 0 || end < 0) {
+        if (this.start) {
+          fill(150, 250, 150); //if the node is the starting node make it green
+        } else if (this.end) {
+          fill(255, 160, 150); //if the node is the end node make it red
+        }
+      } else {
+        fill(255);
+
+        if (this.visited) {
+          fill(0); //if the node is a visited node make it black
+        } if (this.peek) {
+          fill(125); //if the node is being peeked make it grey
+        } if (this.current) {
+          fill(0, 0, 255); //if the node is the end node make it blue
+        }
+      }
     }
 
     //Drawing the circle (8 pixel radius from the centre of the grid square where the node is)
@@ -130,7 +146,19 @@ class Node {
     //Setting the stroke and fill properties for text (a thin black font)
     strokeWeight(1);
     stroke(0);
-    noFill();
+    fill(0);
+
+    if (state === 3 || state === 4) {
+      if (start >= 0 && end >= 0) {
+        if (this.start) {
+          fill(25, 100, 10); //if start node make text green
+          stroke(25, 100, 10);
+        } else if (this.end) {
+          fill(180, 25, 25); //if end node make text red
+          stroke(180, 25, 25);
+        }
+      }
+    }
 
     textAlign(LEFT, BOTTOM); //the x,y given to the text function is the bottom left of the text
     //char(65 + this.index) returns the corresponding letter A-Z of the index of this node e.g. 0 is A, 1 is B

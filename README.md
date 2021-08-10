@@ -6,11 +6,13 @@ Experimenting with visualising pathfinding algorithms using [p5.js](https://p5js
 ## To do list
 - Add more comments for current code **(Done)**
 - Make site mobile friendly **(Done)**
-- Implement Dijkstra's algorithm
+- Implement Dijkstra's algorithm **(Done - first attempt)**
 - Implement A* algorithm
+- Improve node and edge mapping algorithm:
+  - Refactor check node code to use iteration
+  - Add diagonal checks for node check functions 
+  - OR instead start from 0,0 (make it always a node) then test all directions for nodes, then test those nodes etc.
 - Replace alerts with a modal or on canvas text
-- Refactor check node code to use iteration
-- Add diagonal checks for node check functions
 - Add directional edges
 
 ## Functionality

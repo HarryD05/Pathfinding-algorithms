@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Path finding algorithms</title>
+  <title>Pathfinding algorithms</title>
   <link rel="icon"
     href="https://f1.pngfuel.com/png/564/497/80/color-background-graph-coloring-vertex-graph-theory-angle-symmetry-search-algorithm-media-png-clip-art-thumbnail.png"
     type="image/x-icon">
@@ -15,18 +15,31 @@
 
 <body>
   <div id="left">
-    <h1>Path finding algorithms</h1>
+    <h1>Pathfinding algorithms</h1>
     <div id="instructions">
       <p>(Diagonals not yet included)</p>
     </div>
     <div id="edge-buttons">
       <p>Press the up and down buttons or up and down keys to change the edge cost</p>
     </div>
+    <div id="pathfinding-info">
+      <b>Key</b>
+      <div id="key">
+        <p>Green: Start node</p>
+        <p>Red: End node</p>
+        <P>Blue: Current node</P>
+        <p>Grey: Node being checked by the current node</p>
+      </div>
+
+      <button id="next">Next step</button>
+      <p id="explanation"></p>
+    </div>
   </div>
   <div id="canvas">
     <script src="helpers/general.js"></script>
     <script src="helpers/nodeChecks.js"></script>
     <script src="helpers/nodeClass.js"></script>
+    <script src="helpers/dijkstra.js"></script>
     <script src="helpers/astar.js"></script>
     <script src="classes/cell.js"></script>
     <script src="classes/node.js"></script>

@@ -33,24 +33,24 @@ p {
   user-select: none;
 }
 
-#info, #edge-buttons {
+#info, #edge-buttons, #key {
   margin: auto;
-  width: 300px;
+  width: 320px;
   text-align: left;
 }
 
-#edge-buttons p {
+#edge-buttons p, #explanation {
   text-align: center;
-  width: 300px;
+  width: 320px;
   margin: auto;
   margin-top: 1rem;
 }
 
-.show {
+.show, #show {
   display: initial;
 }
 
-.hide {
+.hide, #hide {
   display: none;
 }
 
@@ -69,4 +69,17 @@ p {
   margin-left: 8px;
   width: 32px;
   height: 32px;
+}
+
+#next {
+  margin-top: 1rem;
+}
+
+#pathfinding-info {
+  width: 320px;
+  margin: auto;
+}
+
+#key p {
+  padding: 0;
 }
